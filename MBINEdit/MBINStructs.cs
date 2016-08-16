@@ -10,7 +10,7 @@ namespace MBINEdit
     /* Structure/template notes:
      * NMS uses 1 byte booleans, but .NET reads 4 bytes, use [MarshalAs(UnmanagedType.I1)] to force it to read it as 1 byte
      * shorts/ints/floats are the same size in NMS as .NET, no need to worry about those, but...
-     * shorts/ints/floats are 4 byte aligned, use padding char[]'s to align them (eg. see Padding15 in cGcDebugOptions)
+     * shorts/ints/floats are 4 byte aligned, use padding char[]'s to align them (eg. see Padding15 in cGcDebugOptions) (TODO: maybe not using Pack = 1 would get rid of the need for this?)
      * some ints are actually enums, use a "string[] <fieldName>Values()" method to specify the enum members, which will create a drop down box in the editor UI (eg. see GameWindowMode / GameWindowModeValues in cGcDebugOptions)
      */
 
@@ -426,5 +426,83 @@ namespace MBINEdit
         /* 0xCB8 */ public int FrameFlipRateGame;
         /* 0xCBC */ public float MaxFrameRate;
         /* 0xCC0 = END */
+    }
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
+    class cGcUserSettingsData
+    {
+        [MarshalAs(UnmanagedType.I1)]
+        /* 0x00 */ public bool InvertLookControls;
+        [MarshalAs(UnmanagedType.I1)]
+        /* 0x01 */ public bool InvertFlightControls;
+        [MarshalAs(UnmanagedType.I1)]
+        /* 0x02 */ public bool Vibration;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
+        /* 0x03 */ public char[] Padding3;
+
+        /* 0x04 */ public int ScreenBrightness;
+        /* 0x08 */ public int MusicVolume;
+        /* 0x0C */ public int SfxVolume;
+        /* 0x10 */ public int LookSensitivity;
+        /* 0x14 */ public int FlightSensitivity;
+        /* 0x18 = END */
+    }
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
+    class cTkGraphicsSettings
+    {
+        [MarshalAs(UnmanagedType.I1)]
+        /* 0x00 */ public bool FullScreen;
+        [MarshalAs(UnmanagedType.I1)]
+        /* 0x01 */ public bool Borderless;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+        /* 0x02 */ public char[] Padding2;
+        /* 0x04 */ public int Monitor;
+        [MarshalAs(UnmanagedType.I1)]
+        /* 0x08 */ public bool UseScreenResolution;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
+        /* 0x09 */ public char[] Padding9;
+        /* 0x0C */ public int ResolutionWidth;
+        /* 0x10 */ public int ResolutionHeight;
+        [MarshalAs(UnmanagedType.I1)]
+        /* 0x14 */ public bool VSync;
+        [MarshalAs(UnmanagedType.I1)]
+        /* 0x15 */ public bool GSync;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+        /* 0x16 */ public char[] Padding16;
+        /* 0x18 */ public int ShadowDetail;
+        public string[] ShadowDetailValues()
+        {
+            return new string[] { "Low", "Normal", "High", "Ultra" };
+        }
+        /* 0x1C */ public int TextureDetail;
+        public string[] TextureDetailValues()
+        {
+            return new string[] { "Low", "Normal", "High" };
+        }
+        /* 0x20 */ public int GenerationDetail;
+        public string[] GenerationDetailValues()
+        {
+            return new string[] { "Low", "Normal", "High" };
+        }
+        /* 0x24 */ public int ReflectionsQuality;
+        public string[] ReflectionsQualityValues()
+        {
+            return new string[] { "Low", "Normal", "High" };
+        }
+        /* 0x28 */ public int AntiAliasing;
+        public string[] AntiAliasingValues()
+        {
+            return new string[] { "None", "FXAA", "SSAA4" };
+        }
+        /* 0x2C */ public int AnisotropyLevel;
+        /* 0x30 */ public float FoVOnFoot;
+        /* 0x34 */ public float FoVInShip;
+        /* 0x38 */ public int Brightness;
+        /* 0x3C */ public int MaxframeRate;
+        /* 0x40 */ public bool NoHudMode;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
+        /* 0x41 */ public char[] Padding41;
+        /* 0x44 = END */
     }
 }

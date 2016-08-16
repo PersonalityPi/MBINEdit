@@ -45,6 +45,10 @@ namespace MBINEdit
             {
                 case "cGcDebugOptions": // compiled GcDebugOptions
                     return _io.Reader.ReadStruct<cGcDebugOptions>();
+                case "cGcUserSettingsData":
+                    return _io.Reader.ReadStruct<cGcUserSettingsData>();
+                case "cTkGraphicsSettings":
+                    return _io.Reader.ReadStruct<cTkGraphicsSettings>();
             }
 
             return null; // struct/template not mapped yet
@@ -63,6 +67,12 @@ namespace MBINEdit
             {
                 case "cGcDebugOptions":
                     _io.Writer.WriteStruct((cGcDebugOptions)obj);
+                    break;
+                case "cGcUserSettingsData":
+                    _io.Writer.WriteStruct((cGcUserSettingsData)obj);
+                    break;
+                case "cTkGraphicsSettings":
+                    _io.Writer.WriteStruct((cTkGraphicsSettings)obj);
                     break;
             }
         }
