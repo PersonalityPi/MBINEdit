@@ -7,6 +7,13 @@ using System.Runtime.InteropServices;
 
 namespace MBINEdit
 {
+    /* Structure/template notes:
+     * NMS uses 1 byte booleans, but .NET reads 4 bytes, use [MarshalAs(UnmanagedType.I1)] to force it to read it as 1 byte
+     * shorts/ints/floats are the same size in NMS as .NET, no need to worry about those, but...
+     * shorts/ints/floats are 4 byte aligned, use padding char[]'s to align them (eg. see Padding15 in cGcDebugOptions)
+     * some ints are actually enums, use a "string[] <fieldName>Values()" method to specify the enum members, which will create a drop down box in the editor UI (eg. see GameWindowMode / GameWindowModeValues in cGcDebugOptions)
+     */
+
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
     class MBINHeader
     {
