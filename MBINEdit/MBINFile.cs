@@ -25,6 +25,15 @@ namespace MBINEdit
             return true;
         }
 
+        public bool Save()
+        {
+            _io.Stream.Position = 0;
+            _io.Writer.WriteStruct(Header);
+            _io.Stream.Flush();
+
+            return true;
+        }
+
         public object GetData()
         {
             if (Header == null || String.IsNullOrEmpty(Header.TemplateName))
@@ -38,7 +47,24 @@ namespace MBINEdit
                     return _io.Reader.ReadStruct<cGcDebugOptions>();
             }
 
-            return null; // struct not mapped yet
+            return null; // struct/template not mapped yet
+        }
+
+        public void SetData(object obj)
+        {
+            if (Header == null || String.IsNullOrEmpty(Header.TemplateName))
+                return;
+
+            // todo: don't trim MBIN if the template isn't known
+            _io.Stream.SetLength(0x60); // trim data from the MBIN
+            _io.Stream.Position = 0x60;
+
+            switch(obj.GetType().Name)
+            {
+                case "cGcDebugOptions":
+                    _io.Writer.WriteStruct((cGcDebugOptions)obj);
+                    break;
+            }
         }
     }
 }

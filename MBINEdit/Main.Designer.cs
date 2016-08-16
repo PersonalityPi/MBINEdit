@@ -32,6 +32,7 @@
             this.tsmiFile = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiFileOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.pnlEditor = new System.Windows.Forms.Panel();
+            this.tsmiSave = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -49,7 +50,8 @@
             // tsmiFile
             // 
             this.tsmiFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiFileOpen});
+            this.tsmiFileOpen,
+            this.tsmiSave});
             this.tsmiFile.Name = "tsmiFile";
             this.tsmiFile.Size = new System.Drawing.Size(44, 24);
             this.tsmiFile.Text = "File";
@@ -69,6 +71,14 @@
             this.pnlEditor.Name = "pnlEditor";
             this.pnlEditor.Size = new System.Drawing.Size(700, 543);
             this.pnlEditor.TabIndex = 1;
+            // 
+            // tsmiSave
+            // 
+            this.tsmiSave.Enabled = false;
+            this.tsmiSave.Name = "tsmiSave";
+            this.tsmiSave.Size = new System.Drawing.Size(181, 26);
+            this.tsmiSave.Text = "Save";
+            this.tsmiSave.Click += new System.EventHandler(this.tsmiSave_Click);
             // 
             // Main
             // 
@@ -93,6 +103,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiFile;
         private System.Windows.Forms.ToolStripMenuItem tsmiFileOpen;
         private System.Windows.Forms.Panel pnlEditor;
+        private System.Windows.Forms.ToolStripMenuItem tsmiSave;
     }
 }
 

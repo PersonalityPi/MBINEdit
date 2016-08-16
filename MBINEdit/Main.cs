@@ -39,6 +39,7 @@ namespace MBINEdit
             }
 
             Text = "MBINEdit - " + ofd.FileName;
+            tsmiSave.Enabled = true;
 
             PopulateEditorPanel();
         }
@@ -129,6 +130,62 @@ namespace MBINEdit
 
                 ypos += 30;
             }
+        }
+
+        private void tsmiSave_Click(object sender, EventArgs e)
+        {
+            if (file == null || fileData == null)
+                return;
+
+            foreach(var control in pnlEditor.Controls)
+            {
+                var controlType = control.GetType().Name;
+                if (controlType == "Label")
+                    continue;
+
+                var field = (FieldInfo)((Control)control).Tag;
+                var fieldName = field.Name;
+                var fieldType = field.FieldType.Name;
+
+                switch(fieldType)
+                {
+                    case "String":
+                    case "Single":
+                        var txtValue = (TextBox)control;
+                        if (fieldType == "Single")
+                            field.SetValue(fileData, float.Parse(txtValue.Text));
+                        else
+                            field.SetValue(fileData, txtValue.Text);
+
+                        break;
+
+                    case "Boolean":
+                        var chkValue = (CheckBox)control;
+                        field.SetValue(fileData, chkValue.Checked);
+
+                        break;
+
+                    case "Int16":
+                    case "Int32":
+                        if (controlType == "ComboBox")
+                        {
+                            var cmbValues = (ComboBox)control;
+                            field.SetValue(fileData, cmbValues.SelectedIndex);
+                            break;
+                        }
+                        
+                        var intValue = (NumericUpDown)control;
+                        if (fieldType == "Int16")
+                            field.SetValue(fileData, (short)intValue.Value);
+                        else
+                            field.SetValue(fileData, (int)intValue.Value);
+
+                        break;
+                }
+            }
+
+            file.SetData(fileData);
+            file.Save();
         }
     }
 }
